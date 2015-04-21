@@ -6,7 +6,8 @@ WORKDIR /usr/src/app
 RUN apt-get update && \
     apt-get install -y libmemcached-dev && \
     apt-get autoremove -y && \
-    apt-get autoclean -y
+    apt-get autoclean -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ONBUILD COPY requirements.txt /usr/src/app/
 ONBUILD RUN pip install -r requirements.txt
 
