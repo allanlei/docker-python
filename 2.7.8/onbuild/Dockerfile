@@ -8,7 +8,7 @@ RUN             apt-get update && \
                 apt-get autoremove -y && \
                 apt-get autoclean -y && \
                 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-                pip install pip==6.1.1 setuptools==15.2 && \
+                pip install pip==6.1.1 setuptools==15.2 pyOpenSSL ndg-httpsclient pyasn1 && \
                 pip uninstall -y virtualenv
 ONBUILD COPY    requirements.txt /usr/src/app/
 ONBUILD RUN     pip install -r requirements.txt
