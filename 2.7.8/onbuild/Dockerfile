@@ -5,11 +5,12 @@ WORKDIR         /usr/src/app
 
 RUN             apt-get update && \
                 apt-get install -y gcc python2.7-dev libmemcached-dev libpq-dev libev-dev libxml2-dev libxslt-dev libssl-dev libffi-dev && \
+                pip install -U pip setuptools && \
+                pip install pyOpenSSL ndg-httpsclient pyasn1 && \
+                pip uninstall -y virtualenv && \
                 apt-get autoremove -y && \
                 apt-get autoclean -y && \
-                rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-                pip install pip==6.1.1 setuptools==15.2 pyOpenSSL ndg-httpsclient pyasn1 && \
-                pip uninstall -y virtualenv
+                rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ONBUILD COPY    requirements.txt /usr/src/app/
 ONBUILD RUN     pip install -r requirements.txt
 
