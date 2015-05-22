@@ -5,8 +5,8 @@ WORKDIR         /usr/src/app
 
 RUN             apt-get update && \
                 apt-get install -y gcc python2.7-dev libmemcached-dev libpq-dev libev-dev libxml2-dev libxslt-dev libssl-dev libffi-dev && \
-                pip install -U pip setuptools && \
-                pip install pyOpenSSL ndg-httpsclient pyasn1 && \
+                pip install pip==7.0.0 setuptools==16.0.0 && \
+                pip install pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 pyasn1==0.1.7 pycparser==2.13 cryptography==0.9 cffi==1.0.1 && \
                 pip uninstall -y virtualenv && \
                 apt-get autoremove -y && \
                 apt-get autoclean -y && \
