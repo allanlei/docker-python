@@ -8,7 +8,7 @@ WORKDIR         /usr/src/app
 RUN             apt-get update && \
                 apt-get install -y gcc make python2.7-dev libmemcached-dev libpq-dev libev-dev libxml2-dev libxslt-dev libssl-dev libffi-dev libreadline-dev libncurses-dev patch && \
                 pip install --no-cache-dir pip==$PYTHON_PIP_VERSION setuptools==$PYTHON_SETUPTOOLS_VERSION && \
-                pip install --no-cache-dir pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 pyasn1==0.1.8 pyasn1-modules==0.0.6 pycparser==2.14 cryptography==0.9.1 cffi==1.1.2 readline==6.2.4.1 && \
+                pip install --no-cache-dir pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 pyasn1==0.1.8 pyasn1-modules==0.0.6 pycparser==2.14 cryptography==0.9.3 cffi==1.1.2 readline==6.2.4.1 && \
                 pip uninstall -y virtualenv && \
                 apt-get autoremove -y && \
                 apt-get autoclean -y && \
