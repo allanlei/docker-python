@@ -1,7 +1,5 @@
 FROM            python:2.7.10-slim
 
-ENV             PYTHON_PIP_VERSION 
-ENV             PYTHON_SETUPTOOLS_VERSION 
 RUN             mkdir -p /usr/src/app
 WORKDIR         /usr/src/app
 
