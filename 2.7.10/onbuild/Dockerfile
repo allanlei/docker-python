@@ -1,4 +1,4 @@
-FROM            python:2.7.10-slim
+FROM            orbweb/python:2.7.10-slim
 
 RUN             mkdir -p /usr/src/app
 WORKDIR         /usr/src/app
