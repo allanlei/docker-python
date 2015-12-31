@@ -10,7 +10,7 @@ RUN             apk --no-cache add \
                     python py-pip libxslt libpq libjpeg libwebp openjpeg tiff && \
                 apk --no-cache add --virtual build-dependencies \
                     build-base python-dev openssl-dev libffi-dev zlib-dev \
-                    libmemcached-dev postgresql-dev libev libxml2-dev libxslt-dev \
+                    libmemcached-dev postgresql-dev libev-dev libxml2-dev libxslt-dev \
                     jpeg-dev tiff-dev libwebp-dev freetype-dev openjpeg-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
                 pip install --no-cache-dir \
