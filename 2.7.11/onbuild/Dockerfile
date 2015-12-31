@@ -1,6 +1,8 @@
 FROM            alpine:3.3
 MAINTAINER      Orbweb Developers <devs@orbweb.com>
 
+ENV             PYTHONUNBUFFERED=True
+
 RUN             mkdir -p /usr/src/app
 WORKDIR         /usr/src/app
 
