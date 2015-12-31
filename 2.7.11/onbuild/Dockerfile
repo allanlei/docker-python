@@ -17,7 +17,7 @@ RUN             apk --no-cache add \
                     pip==7.1.2 setuptools==19.2 wheel==0.26.0 \
                     pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 \
                     pyasn1==0.1.9 pyasn1-modules==0.0.8 pycparser==2.14 \
-                    cryptography==1.0.2 cffi==1.2.1
+                    cryptography==1.0.2 cffi==1.2.1 certifi==2015.11.20.1
 
 ONBUILD COPY    requirements.txt /usr/src/app/
 ONBUILD RUN     pip install --no-cache-dir -r requirements.txt && \
