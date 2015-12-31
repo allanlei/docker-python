@@ -1,16 +1,18 @@
 FROM            alpine:3.3
 MAINTAINER      Orbweb Inc. <devs@orbweb.com>
 
-ENV             PYTHONUNBUFFERED=True
+ENV             LANG C.UTF-8
+ENV             PYTHONUNBUFFERED True
+ENV             PYTHON_VERSION 2.7.11-r2
 
 RUN             mkdir -p /usr/src/app
 WORKDIR         /usr/src/app
 
 RUN             apk --no-cache add \
-                    python=2.7.11-r2 && \
+                    python=$PYTHON_VERSION && \
                 python -m ensurepip --default-pip && \
                 apk --no-cache add --virtual build-dependencies \
-                    build-base python-dev=2.7.11-r2 openssl-dev libffi-dev zlib-dev \
+                    build-base python-dev=$PYTHON_VERSION openssl-dev libffi-dev zlib-dev \
                     libmemcached-dev postgresql-dev libev-dev libxml2-dev libxslt-dev \
                     jpeg-dev tiff-dev libwebp-dev freetype-dev openjpeg-dev cython cython-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
