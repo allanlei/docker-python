@@ -7,7 +7,7 @@ RUN             mkdir -p /usr/src/app
 WORKDIR         /usr/src/app
 
 RUN             apk --no-cache add \
-                    python py-pip libxslt libpq libjpeg libwebp openjpeg tiff && \
+                    python py-pip && \
                 apk --no-cache add --virtual build-dependencies \
                     build-base python-dev openssl-dev libffi-dev zlib-dev \
                     libmemcached-dev postgresql-dev libev-dev libxml2-dev libxslt-dev \
