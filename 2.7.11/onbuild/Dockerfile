@@ -1,5 +1,5 @@
 FROM            alpine:3.3
-MAINTAINER      Orbweb Developers <devs@orbweb.com>
+MAINTAINER      Orbweb Inc. <devs@orbweb.com>
 
 ENV             PYTHONUNBUFFERED=True
 
