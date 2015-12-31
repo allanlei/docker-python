@@ -11,7 +11,7 @@ RUN             apk --no-cache add \
                 apk --no-cache add --virtual build-dependencies \
                     build-base python-dev=2.7.11-r2 openssl-dev libffi-dev zlib-dev \
                     libmemcached-dev postgresql-dev libev-dev libxml2-dev libxslt-dev \
-                    jpeg-dev tiff-dev libwebp-dev freetype-dev openjpeg-dev && \
+                    jpeg-dev tiff-dev libwebp-dev freetype-dev openjpeg-dev cython cython-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
                 pip install --no-cache-dir \
                     pip==7.1.2 setuptools==19.2 wheel==0.26.0 \
