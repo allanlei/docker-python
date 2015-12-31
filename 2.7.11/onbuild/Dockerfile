@@ -23,7 +23,7 @@ RUN             apk --no-cache add \
                     cryptography==1.0.2 cffi==1.2.1 certifi==2015.11.20.1
 
 ONBUILD COPY    requirements.txt /usr/src/app/
-ONBUILD RUN     pip install --no-cache-dir -r requirements.txt && \
+ONBUILD RUN     pip install -vvv --no-cache-dir -r requirements.txt && \
                 pip uninstall -y cython && \
                 apk del build-dependencies
 ONBUILD COPY    . /usr/src/app
