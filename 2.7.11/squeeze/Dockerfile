@@ -1,4 +1,4 @@
-FROM buildpack-deps:squeeze
+FROM orbweb/buildpack-deps:squeeze
 
 # remove several traces of debian python
 RUN apt-get purge -y python.*
