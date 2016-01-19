@@ -22,7 +22,7 @@ RUN             apk --no-cache add \
                     readline==6.2.4.1 \
                     pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 \
                     pyasn1==0.1.9 pyasn1-modules==0.0.8 pycparser==2.14 \
-                    cryptography==1.0.2 cffi==1.2.1 certifi==2015.11.20.1
+                    cryptography==1.2.1 cffi==1.5.0 certifi==2015.11.20.1
 
 ONBUILD COPY    requirements.txt /usr/src/app/
 ONBUILD RUN     pip install -vvv --disable-pip-version-check --no-cache-dir -r requirements.txt && \
