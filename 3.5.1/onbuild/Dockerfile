@@ -15,7 +15,7 @@ RUN             apk --no-cache add \
                 apk --no-cache add --virtual build-dependencies \
                     build-base python3-dev=$PYTHON_VERSION openssl-dev libffi-dev zlib-dev \
                     libmemcached-dev postgresql-dev libev-dev libxml2-dev libxslt-dev \
-                    jpeg-dev tiff-dev libwebp-dev freetype-dev openjpeg-dev && \
+                    jpeg-dev tiff-dev libwebp-dev freetype-dev openjpeg-dev readline-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
                 pip install --disable-pip-version-check --no-cache-dir \
                     wheel==0.26.0 cython==0.23.4 \
