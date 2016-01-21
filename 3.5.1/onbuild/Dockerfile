@@ -22,9 +22,8 @@ RUN             apk --no-cache add \
                     wheel==0.26.0 cython==0.23.4 \
                     pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 \
                     pyasn1==0.1.9 pyasn1-modules==0.0.8 pycparser==2.14 \
-                    cryptography==1.2.1 cffi==1.5.0 certifi==2015.11.20.1
-                pip install --disable-pip-version-check --no-cache-dir gnureadline.whl && \
-                rm gnureadline.whl
+                    cryptography==1.2.1 cffi==1.5.0 certifi==2015.11.20.1 && \
+                pip install --disable-pip-version-check --no-cache-dir gnureadline.whl && rm gnureadline.whl
 
 ONBUILD COPY    requirements.txt /usr/src/app/
 ONBUILD RUN     pip install -vvv --disable-pip-version-check --no-cache-dir -r requirements.txt && \
