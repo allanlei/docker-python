@@ -8,7 +8,6 @@ ENV             PYTHON_VERSION 3.5.1-r0
 RUN             mkdir -p /usr/src/app/
 WORKDIR         /usr/src/app/
 
-COPY            gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl /usr/src/app/
 RUN             apk --no-cache add \
                     python3=$PYTHON_VERSION && \
                 ln -s $(which python3) /usr/bin/python && \
@@ -22,8 +21,9 @@ RUN             apk --no-cache add \
                     wheel==0.26.0 cython==0.23.4 \
                     pyOpenSSL==0.15.1 ndg-httpsclient==0.4.0 \
                     pyasn1==0.1.9 pyasn1-modules==0.0.8 pycparser==2.14 \
-                    cryptography==1.2.1 cffi==1.5.0 certifi==2015.11.20.1 && \
-                pip install --disable-pip-version-check --no-cache-dir gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl && \
+                    cryptography==1.2.1 cffi==1.5.0 certifi==2015.11.20.1
+COPY            gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl /usr/src/app/
+RUN             pip install --disable-pip-version-check --no-cache-dir gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl && \
                 rm gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl
 
 ONBUILD COPY    requirements.txt /usr/src/app/
