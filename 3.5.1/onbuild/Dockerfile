@@ -27,7 +27,7 @@ RUN             pip install --disable-pip-version-check --no-cache-dir gnureadli
                 rm gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl
 
 ONBUILD COPY    requirements.txt /usr/src/app/
-ONBUILD RUN     pip install -vvv --disable-pip-version-check --no-cache-dir -r requirements.txt && \
+ONBUILD RUN     pip install -v --disable-pip-version-check --no-cache-dir -r requirements.txt && \
                 pip uninstall -y cython && \
                 apk del build-dependencies
 ONBUILD COPY    . /usr/src/app
