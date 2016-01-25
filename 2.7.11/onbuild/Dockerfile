@@ -3,7 +3,7 @@ MAINTAINER      Orbweb Inc. <devs@orbweb.com>
 
 ENV             LANG C.UTF-8
 ENV             PYTHONUNBUFFERED True
-ENV             PYTHON_VERSION 2.7.11-r2
+ENV             PYTHON_VERSION 2.7.11-r3
 
 RUN             mkdir -p /usr/src/app
 WORKDIR         /usr/src/app
