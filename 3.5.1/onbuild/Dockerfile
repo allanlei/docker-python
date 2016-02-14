@@ -3,6 +3,7 @@ MAINTAINER      Orbweb Inc. <devs@orbweb.com>
 
 ENV             LANG C.UTF-8
 ENV             PYTHON_VERSION 3.5.1
+ENV             PYTHON_PIP_VERSION 7.1.2
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_NO_CACHE_DIR off
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
@@ -10,12 +11,16 @@ ENV             PIP_DISABLE_PIP_VERSION_CHECK on
 COPY            gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl /tmp/
 RUN             apk --no-cache add \
                     python3=$PYTHON_VERSION-r0 && \
-                ln -s $(which python3) /usr/bin/python && \
+                ln -s $(which idle3) /usr/local/bin/idle && \
+                ln -s $(which pydoc3) /usr/local/bin/pydoc && \
+                ln -s $(which python3) /usr/local/bin/python && \
+                ln -s $(which python-config3) /usr/local/bin/python-config && \
                 python -m ensurepip --default-pip && \
+                pip install pip==$PYTHON_PIP_VERSION && \
                 pip install /tmp/gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl && \
                 rm /tmp/gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl
 
-RUN             apk --no-cache add --virtual build-dependencies \
+RUN             apk --no-cache add --virtual .build-deps \
                     build-base \
                     python3-dev=$PYTHON_VERSION-r0 \
                     openssl-dev \
@@ -45,9 +50,14 @@ RUN             apk --no-cache add --virtual build-dependencies \
                     certifi==2015.11.20.1 && \
                 mkdir -p /usr/src/app/
 WORKDIR         /usr/src/app/
+CMD             ["python"]
 
 ONBUILD COPY    requirements.txt /usr/src/app/
 ONBUILD RUN     pip install -v -r requirements.txt && \
                 pip uninstall -y cython && \
-                apk del build-dependencies
+                apk del .build-deps && \
+                find /usr/ \
+                    \( -type d -a -name test -o -name tests \) \
+                    -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+                    -exec rm -rf '{}' +
 ONBUILD COPY    . /usr/src/app
