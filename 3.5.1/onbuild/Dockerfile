@@ -25,17 +25,7 @@ RUN             apk --no-cache add --virtual .build-deps \
                     python3-dev=$PYTHON_VERSION-r0 \
                     openssl-dev \
                     libffi-dev \
-                    zlib-dev \
-                    libmemcached-dev \
-                    postgresql-dev \
-                    libev-dev \
-                    libxml2-dev \
-                    libxslt-dev \
-                    jpeg-dev \
-                    tiff-dev \
-                    libwebp-dev \
-                    freetype-dev \
-                    openjpeg-dev && \
+                    zlib-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
                 pip install wheel==0.26.0 && \
                 pip install \
@@ -48,17 +38,21 @@ RUN             apk --no-cache add --virtual .build-deps \
                     cryptography==1.2.1 \
                     cffi==1.5.0 \
                     certifi==2015.11.20.1 && \
+                apk --no-cache add --virtual .rundeps \
+                    zlib && \
                 mkdir -p /usr/src/app/
 WORKDIR         /usr/src/app/
 CMD             ["python"]
 
 ONBUILD COPY    requirements.txt /usr/src/app/
-ONBUILD RUN     pip install -v -r requirements.txt && \
+ONBUILD RUN     cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .builddeps && \
+                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .rundeps && \
+                pip install -r requirements.txt && \
                 pip uninstall -y cython && \
-                apk del .build-deps && \
+                apk del .builddeps && \
                 find /usr/ \
                     \( -type d -a -name test -o -name tests \) \
                     -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
                     -exec rm -rf '{}' + && \
-                find . -type f -name "*.pyc" -exec rm -rf '{}' +
+                find . -type f -name "__pycache__" -exec rm -rf '{}' +
 ONBUILD COPY    . /usr/src/app
