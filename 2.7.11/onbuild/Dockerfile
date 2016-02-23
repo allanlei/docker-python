@@ -27,7 +27,7 @@ RUN             apk --no-cache add --virtual .builddeps \
                     libffi-dev \
                     zlib-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
-                pip install wheel==0.26.0 && \
+                pip install wheel==0.29.0 && \
                 pip install \
                     cython==0.23.4 \
                     pyOpenSSL==0.15.1 \
