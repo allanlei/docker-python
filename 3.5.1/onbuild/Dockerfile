@@ -23,8 +23,8 @@ RUN             apk --no-cache add \
 RUN             apk --no-cache add --virtual .build-deps \
                     build-base \
                     python3-dev=$PYTHON_VERSION-r0 \
-                    openssl-dev \
-                    libffi-dev \
+                    openssl-dev=1.0.2g-r0 \
+                    libffi-dev=3.2.1-r2 \
                     zlib-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
                 pip install wheel==0.29.0 && \
@@ -35,8 +35,8 @@ RUN             apk --no-cache add --virtual .build-deps \
                     pyasn1==0.1.9 \
                     pyasn1-modules==0.0.8 \
                     pycparser==2.14 \
-                    cryptography==1.2.1 \
-                    cffi==1.5.0 \
+                    cryptography==1.2.3 \
+                    cffi==1.5.2 \
                     certifi==2015.11.20.1 && \
                 apk --no-cache add --virtual .rundeps \
                     zlib && \
