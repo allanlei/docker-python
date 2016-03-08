@@ -53,6 +53,5 @@ ONBUILD RUN     cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '
                 find /usr/ \
                     \( -type d -a -name test -o -name tests \) \
                     -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-                    -exec rm -rf '{}' + && \
-                find . -type f -name "__pycache__" -exec rm -rf '{}' +
+                    -exec rm -rf '{}' +
 ONBUILD COPY    . /usr/src/app
