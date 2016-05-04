@@ -1,34 +1,26 @@
-FROM            alpine:3.3
+FROM            python:3.5.1-alpine
 MAINTAINER      Orbweb Inc. <engineering@orbweb.com>
 
-ENV             LANG C.UTF-8
-ENV             PYTHON_VERSION 3.5.1
-ENV             PYTHON_PIP_VERSION 8.1.1
 ENV             PYTHON_SETUPTOOLS_VERSION 21.0.0
 ENV             PYTHON_WHEEL_VERSION 0.29.0
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_NO_CACHE_DIR off
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
 
-COPY            gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl /tmp/
-RUN             apk --no-cache add \
-                    python3=$PYTHON_VERSION-r0 && \
-                ln -s $(which idle3) /usr/local/bin/idle && \
-                ln -s $(which pydoc3) /usr/local/bin/pydoc && \
-                ln -s $(which python3) /usr/local/bin/python && \
-                ln -s $(which python-config3) /usr/local/bin/python-config && \
-                python -m ensurepip --default-pip && \
-                pip install pip==$PYTHON_PIP_VERSION setuptools==$PYTHON_SETUPTOOLS_VERSION wheel==$PYTHON_WHEEL_VERSION && \
-                pip install /tmp/gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl && \
-                rm /tmp/gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl
+RUN             pip install setuptools==$PYTHON_SETUPTOOLS_VERSION wheel==$PYTHON_WHEEL_VERSION && \
+                mkdir -p /usr/src/app/
+WORKDIR         /usr/src/app/
 
-RUN             apk --no-cache add --virtual .build-deps \
+ONBUILD COPY    requirements.txt /usr/src/app/
+ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     build-base \
-                    python3-dev=$PYTHON_VERSION-r0 \
-                    openssl-dev=1.0.2g-r0 \
-                    libffi-dev=3.2.1-r2 \
+                    openssl-dev \
+                    libffi-dev \
                     zlib-dev && \
-                ln -s /lib/libz.so /usr/lib/. && \
+                cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .build-deps && \
+                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .run-deps && \
+                apk --no-cache add --virtual .run-deps \
+                    zlib && \
                 pip install \
                     cython==0.24 \
                     pyOpenSSL==16.0.0 \
@@ -39,15 +31,6 @@ RUN             apk --no-cache add --virtual .build-deps \
                     cryptography==1.3.1 \
                     cffi==1.6.0 \
                     certifi==2016.2.28 && \
-                apk --no-cache add --virtual .run-deps \
-                    zlib && \
-                mkdir -p /usr/src/app/
-WORKDIR         /usr/src/app/
-CMD             ["python"]
-
-ONBUILD COPY    requirements.txt /usr/src/app/
-ONBUILD RUN     cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .build-deps && \
-                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .run-deps && \
                 pip install -r requirements.txt && \
                 pip uninstall -y cython && \
                 apk del .build-deps && \
