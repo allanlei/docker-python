@@ -39,18 +39,18 @@ RUN             apk --no-cache add --virtual .build-deps \
                     cryptography==1.3.1 \
                     cffi==1.6.0 \
                     certifi==2016.2.28 && \
-                apk --no-cache add --virtual .rundeps \
+                apk --no-cache add --virtual .run-deps \
                     zlib && \
                 mkdir -p /usr/src/app/
 WORKDIR         /usr/src/app/
 CMD             ["python"]
 
 ONBUILD COPY    requirements.txt /usr/src/app/
-ONBUILD RUN     cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .builddeps && \
-                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .rundeps && \
+ONBUILD RUN     cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .build-deps && \
+                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .run-deps && \
                 pip install -r requirements.txt && \
                 pip uninstall -y cython && \
-                apk del .builddeps && \
+                apk del .build-deps && \
                 find /usr/ \
                     \( -type d -a -name test -o -name tests \) \
                     -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
