@@ -1,9 +1,9 @@
 FROM            alpine:3.3
-MAINTAINER      Orbweb Inc. <devs@orbweb.com>
+MAINTAINER      Orbweb Inc. <engineering@orbweb.com>
 
 ENV             LANG C.UTF-8
 ENV             PYTHON_VERSION 3.5.1
-ENV             PYTHON_PIP_VERSION 7.1.2
+ENV             PYTHON_PIP_VERSION 8.1.1
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_NO_CACHE_DIR off
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
@@ -29,15 +29,15 @@ RUN             apk --no-cache add --virtual .build-deps \
                 ln -s /lib/libz.so /usr/lib/. && \
                 pip install wheel==0.29.0 && \
                 pip install \
-                    cython==0.23.4 \
-                    pyOpenSSL==0.15.1 \
+                    cython==0.24 \
+                    pyOpenSSL==16.0.0 \
                     ndg-httpsclient==0.4.0 \
                     pyasn1==0.1.9 \
                     pyasn1-modules==0.0.8 \
                     pycparser==2.14 \
-                    cryptography==1.2.3 \
-                    cffi==1.5.2 \
-                    certifi==2015.11.20.1 && \
+                    cryptography==1.3.1 \
+                    cffi==1.6.0 \
+                    certifi==2016.2.28 && \
                 apk --no-cache add --virtual .rundeps \
                     zlib && \
                 mkdir -p /usr/src/app/
