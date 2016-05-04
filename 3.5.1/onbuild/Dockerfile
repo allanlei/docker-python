@@ -4,6 +4,8 @@ MAINTAINER      Orbweb Inc. <engineering@orbweb.com>
 ENV             LANG C.UTF-8
 ENV             PYTHON_VERSION 3.5.1
 ENV             PYTHON_PIP_VERSION 8.1.1
+ENV             PYTHON_SETUPTOOLS_VERSION 21.0.0
+ENV             PYTHON_WHEEL_VERSION 0.29.0
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_NO_CACHE_DIR off
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
@@ -16,7 +18,7 @@ RUN             apk --no-cache add \
                 ln -s $(which python3) /usr/local/bin/python && \
                 ln -s $(which python-config3) /usr/local/bin/python-config && \
                 python -m ensurepip --default-pip && \
-                pip install pip==$PYTHON_PIP_VERSION && \
+                pip install pip==$PYTHON_PIP_VERSION setuptools==$PYTHON_SETUPTOOLS_VERSION wheel==$PYTHON_WHEEL_VERSION && \
                 pip install /tmp/gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl && \
                 rm /tmp/gnureadline-6.3.3-cp35-cp35m-linux_x86_64.whl
 
@@ -27,7 +29,6 @@ RUN             apk --no-cache add --virtual .build-deps \
                     libffi-dev=3.2.1-r2 \
                     zlib-dev && \
                 ln -s /lib/libz.so /usr/lib/. && \
-                pip install wheel==0.29.0 && \
                 pip install \
                     cython==0.24 \
                     pyOpenSSL==16.0.0 \
