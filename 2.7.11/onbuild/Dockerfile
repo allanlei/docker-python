@@ -6,6 +6,7 @@ ENV             PYTHON_WHEEL_VERSION 0.29.0
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_NO_CACHE_DIR off
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
+ENV             LIBRARY_PATH /lib:/usr/lib
 
 RUN             pip install setuptools==$PYTHON_SETUPTOOLS_VERSION wheel==$PYTHON_WHEEL_VERSION && \
                 mkdir -p /usr/src/app/
