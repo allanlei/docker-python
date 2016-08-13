@@ -4,7 +4,6 @@ MAINTAINER      Allan Lei<allanlei@helveticode.com>
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
 ENV             WORKDIR /usr/src/app/
-ENV             LIBRARY_PATH /lib:/usr/lib
 
 WORKDIR         $WORKDIR
 
