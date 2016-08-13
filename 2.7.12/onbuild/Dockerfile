@@ -1,27 +1,22 @@
 FROM            python:2.7.12-alpine
 MAINTAINER      Allan Lei<allanlei@helveticode.com>
 
-ENV             PYTHON_SETUPTOOLS_VERSION 25.1.6
-ENV             PYTHON_WHEEL_VERSION 0.29.0
 ENV             PYTHONUNBUFFERED True
-ENV             PIP_NO_CACHE_DIR off
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
+ENV             WORKDIR /usr/src/app/
 ENV             LIBRARY_PATH /lib:/usr/lib
 
-RUN             pip install setuptools==$PYTHON_SETUPTOOLS_VERSION wheel==$PYTHON_WHEEL_VERSION && \
-                mkdir -p /usr/src/app/
-WORKDIR         /usr/src/app/
+WORKDIR         $WORKDIR
 
-ONBUILD COPY    requirements.txt /usr/src/app/
-ONBUILD COPY    requirements.*.txt /usr/src/app/
+# ISSUE: https://github.com/docker/docker/issues/13045
+ONBUILD COPY    requirements*.txt $WORKDIR
 ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     build-base \
                     openssl-dev \
                     libffi-dev \
                     zlib-dev && \
-                if [ -s "requirements.build.txt" ]; then cat requirements.build.txt | xargs apk --no-cache add --virtual .build-deps; fi && \
-                pip install \
-                    cython==0.24.1 \
+                cat requirements.build.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .build-deps && \
+                pip install --no-cache-dir --use-wheel \
                     pyOpenSSL==16.0.0 \
                     ndg-httpsclient==0.4.2 \
                     pyasn1==0.1.9 \
@@ -30,13 +25,20 @@ ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     cryptography==1.4 \
                     cffi==1.7.0 \
                     certifi==2016.8.8 && \
-                pip install -r requirements.txt && \
-                if [ -s "requirements.run.txt" ]; then cat requirements.run.txt | xargs apk --no-cache add --virtual .run-deps; fi && \
-                pip uninstall -y cython && \
+                pip install --no-cache-dir --use-wheel -r requirements.txt && \
+                cat requirements.run.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .run-deps && \
+                scanelf --needed --nobanner --recursive /usr/local \
+                  | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+                  | sort -u \
+                  | xargs -r apk info --installed \
+                  | sort -u \
+                  | xargs -r apk --no-cache add --virtual .run-deps && \
                 apk del .build-deps && \
-                find /usr/ \
-                    \( -type d -a -name test -o -name tests \) \
-                    -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-                    -exec rm -rf '{}' + && \
+                find /usr/local -depth \
+                		\( \
+                			\( -type d -a -name test -o -name tests \) \
+                			-o \
+                			\( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+                		\) -exec rm -rf '{}' + && \
                 find . -type d -name "__pycache__" -exec rm -rf '{}' +
-ONBUILD COPY    . /usr/src/app
+ONBUILD COPY    . $WORKDIR
