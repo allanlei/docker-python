@@ -6,6 +6,9 @@ ENV             PIP_DISABLE_PIP_VERSION_CHECK on
 ENV             WORKDIR /usr/src/app/
 
 WORKDIR         $WORKDIR
+RUN             echo "@edge-main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+                echo "@edge-community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
+                echo "@edge-testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 # ISSUE: https://github.com/docker/docker/issues/13045
 ONBUILD COPY    requirements*.txt $WORKDIR
