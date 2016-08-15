@@ -6,9 +6,10 @@ ENV             PIP_DISABLE_PIP_VERSION_CHECK on
 ENV             WORKDIR /usr/src/app/
 
 WORKDIR         $WORKDIR
-RUN             echo "@edge-main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-                echo "@edge-community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-                echo "@edge-testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+# ISSUE: https://github.com/gliderlabs/docker-alpine/issues/205
+# RUN             echo "@edge-main http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
+#                 echo "@edge-community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
+#                 echo "@edge-testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 RUN             apk --no-cache add --virtual .build-deps \
                     build-base \
