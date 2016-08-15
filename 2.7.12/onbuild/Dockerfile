@@ -27,17 +27,17 @@ ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                 pip install --no-cache-dir --use-wheel -r requirements.txt && \
                 cat requirements.run.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .run-deps && \
                 scanelf --needed --nobanner --recursive /usr/local \
-                  | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-                  | sort -u \
-                  | xargs -r apk info --installed \
-                  | sort -u \
-                  | xargs -r apk --no-cache add --virtual .run-deps && \
+                    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+                    | sort -u \
+                    | xargs -r apk info --installed \
+                    | sort -u \
+                    | xargs -r apk --no-cache add --virtual .run-deps && \
                 apk del .build-deps && \
                 find /usr/local -depth \
-                		\( \
-                			\( -type d -a -name test -o -name tests \) \
-                			-o \
-                			\( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-                		\) -exec rm -rf '{}' + && \
+            		\( \
+            			\( -type d -a -name test -o -name tests \) \
+            			-o \
+            			\( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+            		\) -exec rm -rf '{}' + && \
                 find . -type d -name "__pycache__" -exec rm -rf '{}' +
 ONBUILD COPY    . $WORKDIR
