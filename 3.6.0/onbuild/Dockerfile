@@ -1,4 +1,4 @@
-FROM            python:3.6.0-alpine
+FROM            python:3.6-alpine
 MAINTAINER      Allan Lei<allanlei@helveticode.com>
 
 ENV             PYTHON_SETUPTOOLS_VERSION 25.1.6
