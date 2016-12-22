@@ -17,14 +17,14 @@ RUN             apk --no-cache add --virtual .build-deps \
                     libffi-dev \
                     zlib-dev && \
                 pip install --no-cache-dir --use-wheel \
-                    pyOpenSSL==16.0.0 \
+                    pyOpenSSL==16.2.0 \
                     ndg-httpsclient==0.4.2 \
                     pyasn1==0.1.9 \
                     pyasn1-modules==0.0.8 \
-                    pycparser==2.14 \
-                    cryptography==1.4 \
-                    cffi==1.7.0 \
-                    certifi==2016.8.8 && \
+                    pycparser==2.17 \
+                    cryptography==1.7.1 \
+                    cffi==1.9.1 \
+                    certifi==2016.9.26 && \
                 scanelf --needed --nobanner --recursive /usr/local \
                     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
                     | sort -u \
@@ -34,15 +34,16 @@ RUN             apk --no-cache add --virtual .build-deps \
                 apk del .build-deps
 
 # ISSUE: https://github.com/docker/docker/issues/13045
-ONBUILD COPY    requirements*.txt $WORKDIR
+ONBUILD COPY    requirements.txt $WORKDIR
+ONBUILD COPY    requirements.*.txt $WORKDIR
 ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     build-base \
                     openssl-dev \
                     libffi-dev \
                     zlib-dev && \
-                cat requirements.build.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .build-deps && \
+                if [ -s "requirements.build.txt" ]; then cat requirements.build.txt | xargs apk --no-cache add --virtual .build-deps; fi && \
                 pip install --no-cache-dir --use-wheel -r requirements.txt && \
-                cat requirements.run.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .run-deps && \
+                if [ -s "requirements.run.txt" ]; then cat requirements.run.txt | xargs apk --no-cache add --virtual .run-deps; fi && \
                 scanelf --needed --nobanner --recursive /usr/local \
                     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
                     | sort -u \
@@ -50,11 +51,9 @@ ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     | sort -u \
                     | xargs -r apk --no-cache add --virtual .run-deps && \
                 apk del .build-deps && \
-                find /usr/local -depth \
-            		\( \
-            			\( -type d -a -name test -o -name tests \) \
-            			-o \
-            			\( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-            		\) -exec rm -rf '{}' + && \
+                find /usr/ \
+                    \( -type d -a -name test -o -name tests \) \
+                    -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+                    -exec rm -rf '{}' + && \
                 find . -type d -name "__pycache__" -exec rm -rf '{}' +
 ONBUILD COPY    . $WORKDIR
