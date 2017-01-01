@@ -1,5 +1,5 @@
-FROM            python:3.6.0rc2-alpine
-MAINTAINER      Allan Lei<allanlei@helveticode.com>
+FROM            python:3.6.0-alpine
+MAINTAINER      Allan Lei <allanlei@helveticode.com>
 
 ENV             PYTHONUNBUFFERED True
 ENV             PIP_DISABLE_PIP_VERSION_CHECK on
