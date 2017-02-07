@@ -34,16 +34,15 @@ RUN             apk --no-cache add --virtual .build-deps \
                 apk del .build-deps
 
 
-ONBUILD COPY    requirements.txt $WORKDIR
-ONBUILD COPY    requirements.*.txt $WORKDIR
+ONBUILD COPY    requirements*.txt $WORKDIR
 ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     build-base \
                     openssl-dev \
                     libffi-dev \
                     zlib-dev && \
-                if [ -s "requirements.build.txt" ]; then cat requirements.build.txt | xargs apk --no-cache add --virtual .build-deps; fi && \
+                cat requirements.build.txt 2> /dev/null | xargs apk -r --no-cache add --virtual .build-deps && \
                 pip install --no-cache-dir --use-wheel -r requirements.txt && \
-                if [ -s "requirements.run.txt" ]; then cat requirements.run.txt | xargs apk --no-cache add --virtual .run-deps; fi && \
+                cat requirements.run.txt 2> /dev/null | xargs apk -r --no-cache add --virtual .run-deps && \
                 scanelf --needed --nobanner --recursive /usr/local \
                     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
                     | sort -u \
