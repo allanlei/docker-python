@@ -19,12 +19,12 @@ RUN             apk --no-cache add --virtual .build-deps \
                 pip install --no-cache-dir --use-wheel \
                     pyOpenSSL==16.2.0 \
                     ndg-httpsclient==0.4.2 \
-                    pyasn1==0.1.9 \
+                    pyasn1==0.2.2 \
                     pyasn1-modules==0.0.8 \
                     pycparser==2.17 \
-                    cryptography==1.7.1 \
+                    cryptography==1.7.2 \
                     cffi==1.9.1 \
-                    certifi==2016.9.26 && \
+                    certifi==2017.1.23 && \
                 scanelf --needed --nobanner --recursive /usr/local \
                     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
                     | sort -u \
