@@ -18,8 +18,8 @@ ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     openssl-dev \
                     libffi-dev \
                     zlib-dev && \
-                cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .build-deps && \
-                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs apk --no-cache add --virtual .run-deps && \
+                cat requirements.txt | grep -oh -E "builddeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs -r apk --no-cache add --virtual .build-deps && \
+                cat requirements.txt | grep -oh -E "rundeps:(\w|,|-)*" | awk '{split($0,a,":"); print a[2]}' | awk '{gsub(/,/, "\n", $0); print $0}' | sort -u | xargs -r apk --no-cache add --virtual .run-deps && \
                 apk --no-cache add --virtual .run-deps \
                     zlib && \
                 pip install \

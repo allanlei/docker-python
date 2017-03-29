@@ -40,9 +40,9 @@ ONBUILD RUN     apk --no-cache add --virtual .build-deps \
                     openssl-dev \
                     libffi-dev \
                     zlib-dev && \
-                cat requirements.build.txt 2> /dev/null | xargs apk -r --no-cache add --virtual .build-deps && \
+                cat requirements.build.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .build-deps && \
                 pip install --no-cache-dir --use-wheel -r requirements.txt && \
-                cat requirements.run.txt 2> /dev/null | xargs apk -r --no-cache add --virtual .run-deps && \
+                cat requirements.run.txt 2> /dev/null | xargs -r apk --no-cache add --virtual .run-deps && \
                 scanelf --needed --nobanner --recursive /usr/local \
                     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
                     | sort -u \
